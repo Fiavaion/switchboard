@@ -1,0 +1,13 @@
+{
+  "triggerModifier": "command",
+  "showMinimizedWindows": true,
+  "showHiddenApps": true,
+  "showOtherSpaces": true,
+  "excludedBundleIDs": [],
+  "thumbnailSize": "auto",
+  "launchAtLogin": true,
+  "screenshotSaveToFolder": false,
+  "screenshotFolder": "~/Desktop",
+  "showScreenshotHUD": true,
+  "showStatusItem": true
+}

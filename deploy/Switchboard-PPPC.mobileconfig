@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  PRD M6: PPPC profile for the Developer ID-signed Switchboard.app.
+  Must be delivered by a user-approved / supervised MDM; macOS ignores PPPC payloads installed by hand.
+  - Accessibility: Allowed (pre-granted, user is not prompted).
+  - ScreenCapture: Apple does not let a profile grant Screen Recording, only deny it. This payload
+    sets AllowStandardUserToSetSystemService so a non-admin lab user can switch it on themselves.
+    Without it the switcher shows icon + title instead of thumbnails (PRD D6).
+  CodeRequirement is the designated requirement from `codesign -dr - build/Switchboard.app` on a
+  release.sh build. It pins bundle ID + Team ID 9RWD38STJV, so it stays valid across versions.
+  See docs/DEPLOYMENT.md and docs/RESEARCH.md section 5.
+-->
+<plist version="1.0">
+<dict>
+  <key>PayloadType</key><string>Configuration</string>
+  <key>PayloadVersion</key><integer>1</integer>
+  <key>PayloadIdentifier</key><string>com.fiavaion.switchboard.pppc</string>
+  <key>PayloadUUID</key><string>24298AEE-EC2B-4361-B96F-B743ECC0ED37</string>
+  <key>PayloadDisplayName</key><string>Switchboard Privacy Permissions</string>
+  <key>PayloadDescription</key><string>Grants Accessibility to Switchboard and lets standard users enable Screen Recording for it.</string>
+  <key>PayloadOrganization</key><string>Fiavaion</string>
+  <key>PayloadScope</key><string>System</string>
+  <key>PayloadContent</key>
+  <array>
+    <dict>
+      <key>PayloadType</key><string>com.apple.TCC.configuration-profile-policy</string>
+      <key>PayloadVersion</key><integer>1</integer>
+      <key>PayloadIdentifier</key><string>com.fiavaion.switchboard.pppc.tcc</string>
+      <key>PayloadUUID</key><string>6C3AF752-CD26-4049-8D12-347FC5E8FCEE</string>
+      <key>PayloadDisplayName</key><string>Switchboard PPPC</string>
+      <key>Services</key>
+      <dict>
+        <key>Accessibility</key>
+        <array>
+          <dict>
+            <key>Identifier</key><string>com.fiavaion.switchboard</string>
+            <key>IdentifierType</key><string>bundleID</string>
+            <key>CodeRequirement</key><string>identifier "com.fiavaion.switchboard" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "9RWD38STJV"</string>
+            <key>StaticCode</key><false/>
+            <key>Authorization</key><string>Allow</string>
+            <key>Comment</key><string>Cmd+Tab event tap and window raising via AX</string>
+          </dict>
+        </array>
+        <key>ScreenCapture</key>
+        <array>
+          <dict>
+            <key>Identifier</key><string>com.fiavaion.switchboard</string>
+            <key>IdentifierType</key><string>bundleID</string>
+            <key>CodeRequirement</key><string>identifier "com.fiavaion.switchboard" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "9RWD38STJV"</string>
+            <key>StaticCode</key><false/>
+            <key>Authorization</key><string>AllowStandardUserToSetSystemService</string>
+            <key>Comment</key><string>Window thumbnails; a profile cannot pre-grant this, only let non-admins enable it</string>
+          </dict>
+        </array>
+      </dict>
+    </dict>
+  </array>
+</dict>
+</plist>

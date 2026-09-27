@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:switchboard}",
+            "name": "Debug Switchboard",
+            "target": "Switchboard",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug Switchboard"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:switchboard}",
+            "name": "Release Switchboard",
+            "target": "Switchboard",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release Switchboard"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+# PRD M5: tests + unsigned (ad-hoc) build on every push to main and every PR.
+# Cost note: macOS runner minutes bill at 10x Linux minutes on private repos
+# (free on public repos). Keep this job small while Fiavaion/switchboard is private.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests
+        run: swift test
+      - name: Build app bundle (ad-hoc signed by bundle.sh; no certificates in CI)
+        run: scripts/build.sh
