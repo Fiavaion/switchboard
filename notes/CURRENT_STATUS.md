@@ -1,7 +1,7 @@
 # Current Status
 
 **Last updated:** 2026-09-27
-**Phase / focus:** v0.4.0 (M0–M4) tagged, Success Metric verified; M5 release pending notarization credentials.
+**Phase / focus:** v0.4.0 (M0–M4) public at github.com/Fiavaion/switchboard, CI green; M5 release pending notarization credentials.
 **Build:** ✅ `scripts/build.sh` (0 warnings)   **Tests:** 28/28 passing (`swift test`)
 
 ## What works right now (seen working on the real app, macOS 26.6.2)

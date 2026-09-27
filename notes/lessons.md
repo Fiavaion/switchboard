@@ -48,3 +48,10 @@ Tag inline as `// LESSON-{ARCH|BUG|PERF|API|UI|TEST|BUILD}-NNN: summary`; `/less
 **Also:** child elements (groups, buttons) resolve to their window's ID too, so a match only counts when `kAXRoleAttribute` is `AXWindow`. Windows that are never found go in a negative cache, so a miss costs one scan, not one on every open. (Both found in code review.)
 **Prevention:** test the success metric in exactly its described setup (several windows of one app, full screen) before calling it met. Last night's Safari/VS Code proxy runs hid this.
 **Location:** Sources/Switchboard/Windows/AX.swift (`windowElements`) · **Impact:** high (the product's core promise)
+
+#### LESSON-BUILD-003: CGFloat/Double arithmetic can time out older Swift type-checkers
+**Problem:** CI (macos-15 runner) failed with "unable to type-check this expression in reasonable time" on a one-line layout calculation that compiled instantly with local Swift 6.3.
+**Root cause:** implicit CGFloat↔Double conversion multiplies the overloads the solver must try; older compilers give up.
+**Fix:** annotate intermediates as `Double` and convert `CGFloat` explicitly.
+**Prevention:** before pushing UI code, build once with `-Xswiftc -Xfrontend -Xswiftc -warn-long-expression-type-checking=30` and fix anything flagged.
+**Location:** Sources/Switchboard/UI/SwitcherPanel.swift (`layout()`) · **Impact:** med (red CI on the first public push)

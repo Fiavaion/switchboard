@@ -48,7 +48,7 @@ final class SwitcherPanel {
     private func layout() {
         guard let screen else { return }
         let visible = screen.visibleFrame
-        // Explicit Double throughout: mixing CGFloat and Double here made older compilers time out.
+        // LESSON-BUILD-003: explicit Double throughout — mixing CGFloat and Double made older compilers time out.
         let tile: Double = model.tileWidth + 2 * Self.tilePadding
         let usable: Double = Double(visible.width) * 0.9 - 2 * Self.margin + Self.spacing
         let fit = Int(usable / (tile + Self.spacing))
