@@ -48,8 +48,10 @@ final class SwitcherPanel {
     private func layout() {
         guard let screen else { return }
         let visible = screen.visibleFrame
-        let tile = model.tileWidth + 2 * Self.tilePadding
-        let fit = Int((visible.width * 0.9 - 2 * Self.margin + Self.spacing) / (tile + Self.spacing))
+        // Explicit Double throughout: mixing CGFloat and Double here made older compilers time out.
+        let tile: Double = model.tileWidth + 2 * Self.tilePadding
+        let usable: Double = Double(visible.width) * 0.9 - 2 * Self.margin + Self.spacing
+        let fit = Int(usable / (tile + Self.spacing))
         model.columns = max(1, min(model.state.visible.count, fit))
         hosting.layoutSubtreeIfNeeded()
         let size = hosting.fittingSize
