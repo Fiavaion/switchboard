@@ -16,7 +16,7 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Unit tests
         run: swift test
       - name: Build app bundle (ad-hoc signed by bundle.sh; no certificates in CI)

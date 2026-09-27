@@ -79,19 +79,30 @@ struct SwitcherView: View {
                     .foregroundStyle(.secondary)
                     .padding(24)
             } else {
-                LazyVGrid(columns: Array(repeating: GridItem(.fixed(model.tileWidth + 16), spacing: 8), count: model.columns),
-                          spacing: 8) {
-                    ForEach(Array(model.state.visible.enumerated()), id: \.element.id) { index, window in
-                        WindowTile(window: window, selected: index == model.state.selectedIndex,
-                                   icon: model.icon(for: window.pid), thumbnail: model.thumbnails[window.id],
-                                   width: model.tileWidth) { onPick(index) }
-                    }
-                }
+                grid
             }
         }
         .padding(16)
         .background(PanelBackground())
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    // Split out of `body`: as one expression it exceeds the type-checker's time limit on
+    // older Swift compilers (CI).
+    private var grid: some View {
+        let columns = Array(repeating: GridItem(.fixed(model.tileWidth + 16), spacing: 8), count: model.columns)
+        let entries = Array(model.state.visible.enumerated())
+        return LazyVGrid(columns: columns, spacing: 8) {
+            ForEach(entries, id: \.element.id) { index, window in
+                tile(index, window)
+            }
+        }
+    }
+
+    private func tile(_ index: Int, _ window: WindowInfo) -> WindowTile {
+        WindowTile(window: window, selected: index == model.state.selectedIndex,
+                   icon: model.icon(for: window.pid), thumbnail: model.thumbnails[window.id],
+                   width: model.tileWidth) { onPick(index) }
     }
 }
 
